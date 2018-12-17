@@ -1,0 +1,13 @@
+Usage: cipher -m METHOD -p PASSWORD [INPUT_FILE] [OUTPUT_FILE]
+Encrypt or decrypt text using simple ciphers
+Example: cipher -m vigenere -p HELLOWORLD - ciphertext.txt
+
+With no INPUT_FILE, or when INPUT_FILE is -, read standard input.
+With no OUTPUT_FILE, or when OUTPUT_FILE is -, read standard input.
+
+  -m    Use cipher method METHOD
+        Supported options for METHOD: 'caesar', 'vigenere'
+  -p    PASSWORD will be used as the cipher key
+
+
+Report bugs to Adrian Padin, padin.adrian@gmail.com
