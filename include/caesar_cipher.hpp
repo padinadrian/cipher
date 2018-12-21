@@ -12,17 +12,35 @@ Description:
 
 \************************************************************/
 
+
+#ifndef CAESAR_CIPHER_HPP_
+#define CAESAR_CIPHER_HPP_
+
+
 /* ===== Includes ===== */
 #include <string>
 #include "vigenere_cipher.hpp"
 
 
-/* ===== Functions ===== */
+namespace cipher {
 
-inline void EncryptCaeserAlpha(const char password, const std::string& plaintext, std::string& ciphertext)
-{
-    EncryptVigenereAlpha(std::string(1, password + 'A'), plaintext, ciphertext);
-}
+    /* ===== Functions ===== */
+
+    /**
+     * Encrypt the given plaintext using a Caesar cipher
+     * This funciton is limited to upper-case alphabet characters (A-Z)
+     * See https://en.wikipedia.org/wiki/Caesar_cipher for details
+     * @param[in]   password - The encryption offset. Use the same offset to decrypt
+     * @param[in]   plaintext - The text to encrypt
+     * @param[out]  ciphertext - The resulting encrypted text
+     * @throw   If password or plaintext contain non-alpha characters
+     */
+    inline void EncryptCaesarAlpha(const char password, const std::string& plaintext, std::string& ciphertext)
+    {
+        EncryptVigenereAlpha(std::string(1, password), plaintext, ciphertext);
+    }
+
+}   // end namespace cipher
 
 
-
+#endif  // CAESAR_CIPHER_HPP_

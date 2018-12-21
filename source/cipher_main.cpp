@@ -15,12 +15,17 @@ Description:
 
 /* ===== Includes ===== */
 #include <cstdio>
+#include <exception>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include "unistd.h"
 #include "vigenere_cipher.hpp"
+#include "caesar_cipher.hpp"
 #include "cipher_usage.hpp"
+
+using cipher::EncryptCaesarAlpha;
+using cipher::EncryptVigenereAlpha;
 
 
 /**
@@ -50,29 +55,44 @@ static void ReadFromFile(const std::istream& input_file, std::string& output_str
  *
  */
 static int32_t ExecuteCipher(const std::string& method,
-                      std::string& password,
-                      std::istream& input_file,
-                      std::ostream& output_file)
+                             std::string& password,
+                             std::istream& input_file,
+                             std::ostream& output_file)
 {
     // End result return code
     int32_t retval = 0;
 
-    printf("method: %s\n", method.c_str());
-    printf("password: %s\n", password.c_str());
-
     // Input
     std::string plaintext;
     ReadFromFile(input_file, plaintext);
+    (void)cipher::rtrim(plaintext);
+    (void)cipher::rtrim(password);
 
     // Do the cipher
     std::string ciphertext;
-    if (method == "caesar")
+    if (method == "vigenere")
     {
-
+        try
+        {
+            EncryptVigenereAlpha(password, plaintext, ciphertext);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << "Error: " << e.what() << std::endl;
+            retval = 1;
+        }
     }
-    else if (method == "vigenere")
+    else if (method == "caesar")
     {
-
+        try
+        {
+            EncryptCaesarAlpha(password[0], plaintext, ciphertext);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << "Error: " << e.what() << std::endl;
+            retval = 1;
+        }
     }
     else
     {
@@ -81,7 +101,7 @@ static int32_t ExecuteCipher(const std::string& method,
     }
 
     // Output
-    output_file << ciphertext;
+    output_file << ciphertext << std::endl;
     return retval;
 }
 
@@ -93,7 +113,7 @@ int main(int32_t argc, char* const* argv)
     // Final result
     int32_t retval = 0;
 
-    // Process system arguments
+    // Process arguments
     int32_t opt = 0;
     std::string method;
     std::string password;
@@ -101,36 +121,42 @@ int main(int32_t argc, char* const* argv)
     {
         switch(opt)
         {
+            // m for METHOD
             case 'm':
             {
                 method = optarg;
                 break;
             }
+            // p for PASSWORD
             case 'p':
             {
                 password = optarg;
                 break;
             }
+            // Option missing a value
             case ':':
-                printf("option missing a value!\n");
+            {
                 retval = 1;
                 break;
+            }
+            // Unknown option
             case '?':
-                printf("unknown option: %c\n", optopt);
+            {
                 retval = 1;
                 break;
+            }
         }
     }
 
     // Check for errors in arguments
     if (method.empty())
     {
-        printf("Error: No method given.\n");
+        std::cerr << "Error: No method given." << std::endl;
         retval = 1;
     }
     if (password.empty())
     {
-        printf("Error: No password given.\n");
+        std::cerr << "Error: No password given." << std::endl;
         retval = 1;
     }
 
@@ -174,25 +200,23 @@ int main(int32_t argc, char* const* argv)
         // Use both stdin and stdout
         if (use_stdin && use_stdout)
         {
-            std::cout << "Use stdin and stdout" << std::endl;
             retval = ExecuteCipher(method, password, std::cin, std::cout);
         }
+        // Use stdin for input and file for output
         else if (use_stdin)
         {
-            std::cout << "Use stdin and file out: " << argv[optind + 1] << std::endl;
             std::ofstream outfile(argv[optind + 1]);
             retval = ExecuteCipher(method, password, std::cin, outfile);
         }
+        // Use file for input and stdout for output
         else if (use_stdout)
         {
-            std::cout << "Use file in: " << argv[optind] << " and stdout" << std::endl;
             std::ifstream infile(argv[optind]);
             retval = ExecuteCipher(method, password, infile, std::cout);
         }
+        // Use files for input and output
         else
         {
-            std::cout << "Use file in: " << argv[optind]
-                        << " and file out" << argv[optind + 1] << std::endl;
             std::ifstream infile(argv[optind]);
             std::ofstream outfile(argv[optind + 1]);
             retval = ExecuteCipher(method, password, infile, outfile);

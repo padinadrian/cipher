@@ -12,6 +12,8 @@ Description:
 #include <gtest/gtest.h>
 #include "cipher_utils.hpp"
 
+using cipher::IsUpperAlpha;
+
 
 /* ===== Tests ===== */
 

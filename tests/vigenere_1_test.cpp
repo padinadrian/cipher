@@ -12,6 +12,8 @@ Description:
 #include <gtest/gtest.h>
 #include "vigenere_cipher.hpp"
 
+using cipher::EncryptVigenereAlpha;
+
 
 /* ===== Tests ===== */
 

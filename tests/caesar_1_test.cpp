@@ -12,6 +12,8 @@ Description:
 #include <gtest/gtest.h>
 #include "caesar_cipher.hpp"
 
+using cipher::EncryptCaesarAlpha;
+
 
 /* ===== Tests ===== */
 
@@ -19,7 +21,7 @@ TEST(Caesar, Identity1)
 {
     const std::string plaintext("HELLOWORLD");
     std::string ciphertext;
-    EncryptCaeserAlpha(0, plaintext, ciphertext);
+    EncryptCaesarAlpha('A', plaintext, ciphertext);
     EXPECT_EQ(plaintext, ciphertext);
 }
 
