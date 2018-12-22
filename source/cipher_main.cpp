@@ -1,5 +1,5 @@
 /************************************************************\
-Filename:   cipher.cpp
+Filename:   cipher_main.cpp
 Author:     Adrian Padin (padin.adrian@gmail.com)
 Description:
     This is the starter file for the cipher program
@@ -20,12 +20,14 @@ Description:
 #include <fstream>
 #include <sstream>
 #include "unistd.h"
+#include "cipher_usage.hpp"
+#include "cipher_version.hpp"
 #include "vigenere_cipher.hpp"
 #include "caesar_cipher.hpp"
-#include "cipher_usage.hpp"
 
 using cipher::EncryptCaesarAlpha;
 using cipher::EncryptVigenereAlpha;
+using cipher::VERSION_FULL;
 
 
 /**
@@ -118,16 +120,27 @@ int main(int32_t argc, char* const* argv)
     std::string method;
     std::string password;
     bool decrypt = false;
-    bool help_only = false;
-    while ((opt = getopt(argc, argv, ":hdm:p:")) != -1)
+    while ((opt = getopt(argc, argv, ":hvdm:p:")) != -1)
     {
         switch(opt)
         {
             // h is for help
             case 'h':
             {
+                // Print help information and exit
+                std::cout << usage_str;
                 retval = 1;
-                help_only = true;
+                break;
+            }
+            // v is for version
+            case 'v':
+            {
+                // Print version information and exit
+                std::cout << "cipher: " << VERSION_FULL << std::endl;
+                std::cout << "Copyright (C) 2018 Adrian Padin <padin.adrian@gmail.com>" << std::endl;
+                std::cout << "Software released under MIT License, provided free and without warranty" << std::endl;
+                std::cout << "View source at https://github.com/padinadrian/cipher" << std::endl;
+                retval = 1;
                 break;
             }
             // m for METHOD
@@ -151,6 +164,8 @@ int main(int32_t argc, char* const* argv)
             // Option missing a value
             case ':':
             {
+                std::cerr << "Error: Option missing a value." << std::endl;
+                std::cerr << "Try 'cipher -h' for more information." << std::endl;
                 retval = 1;
                 break;
             }
@@ -163,78 +178,80 @@ int main(int32_t argc, char* const* argv)
         }
     }
 
-    // Check for errors in arguments
-    if (method.empty() && (!help_only))
+    if (retval == 0)
     {
-        std::cerr << "Error: No method given." << std::endl;
-        retval = 1;
-    }
-    if (password.empty() && (!help_only))
-    {
-        std::cerr << "Error: No password given." << std::endl;
-        retval = 1;
-    }
+        // Check for errors in arguments
+        if (method.empty())
+        {
+            std::cerr << "Error: No method given." << std::endl;
+            retval = 1;
+        }
+        if (password.empty())
+        {
+            std::cerr << "Error: No password given." << std::endl;
+            retval = 1;
+        }
+        if (password.empty() || method.empty())
+        {
+            std::cerr << "Try 'cipher -h' for more information." << std::endl;
+        }
+        else {
 
-    if (retval != 0)
-    {
-        std::cout << usage_str;
-    }
-    else
-    {
-        // Figure out input/output arguments
-        bool use_stdin = false;
-        bool use_stdout = false;
-        switch(argc - optind)
-        {
-            // If optind == argc there are no arguments
-            // Use stdin and stdout
-            case 0:
+            // Figure out input/output arguments
+            bool use_stdin = false;
+            bool use_stdout = false;
+            switch(argc - optind)
             {
-                use_stdin = true;
-                use_stdout = true;
-                break;
+                // If optind == argc there are no arguments
+                // Use stdin and stdout
+                case 0:
+                {
+                    use_stdin = true;
+                    use_stdout = true;
+                    break;
+                }
+                // If there is one argument, use as input file
+                // Use input from file and output to stdout
+                case 1:
+                {
+                    use_stdin = (argv[optind][0] == '-');
+                    use_stdout = true;
+                    break;
+                }
+                // If there are two arguments, use files as input and output
+                case 2:
+                default:    // ignore other arguments
+                {
+                    use_stdin = (argv[optind][0] == '-');
+                    use_stdout = (argv[optind + 1][0] == '-');
+                    break;
+                }
             }
-            // If there is one argument, use as input file
-            // Use input from file and output to stdout
-            case 1:
-            {
-                use_stdin = (argv[optind][0] == '-');
-                use_stdout = true;
-                break;
-            }
-            // If there are two arguments, use files as input and output
-            case 2:
-            default:    // ignore other arguments
-            {
-                use_stdin = (argv[optind][0] == '-');
-                use_stdout = (argv[optind + 1][0] == '-');
-                break;
-            }
-        }
 
-        // Use both stdin and stdout
-        if (use_stdin && use_stdout)
-        {
-            retval = ExecuteCipher(method, password, std::cin, std::cout);
-        }
-        // Use stdin for input and file for output
-        else if (use_stdin)
-        {
-            std::ofstream outfile(argv[optind + 1]);
-            retval = ExecuteCipher(method, password, std::cin, outfile);
-        }
-        // Use file for input and stdout for output
-        else if (use_stdout)
-        {
-            std::ifstream infile(argv[optind]);
-            retval = ExecuteCipher(method, password, infile, std::cout);
-        }
-        // Use files for input and output
-        else
-        {
-            std::ifstream infile(argv[optind]);
-            std::ofstream outfile(argv[optind + 1]);
-            retval = ExecuteCipher(method, password, infile, outfile);
+            // Use both stdin and stdout
+            if (use_stdin && use_stdout)
+            {
+                retval = ExecuteCipher(method, password, std::cin, std::cout);
+            }
+            // Use stdin for input and file for output
+            else if (use_stdin)
+            {
+                std::ofstream outfile(argv[optind + 1]);
+                retval = ExecuteCipher(method, password, std::cin, outfile);
+            }
+            // Use file for input and stdout for output
+            else if (use_stdout)
+            {
+                std::ifstream infile(argv[optind]);
+                retval = ExecuteCipher(method, password, infile, std::cout);
+            }
+            // Use files for input and output
+            else
+            {
+                std::ifstream infile(argv[optind]);
+                std::ofstream outfile(argv[optind + 1]);
+                retval = ExecuteCipher(method, password, infile, outfile);
+            }
         }
     }
 

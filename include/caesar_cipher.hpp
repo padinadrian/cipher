@@ -1,14 +1,23 @@
 /************************************************************\
-Filename:   cipher.cpp
+Filename:   caesar_cipher.hpp
 Author:     Adrian Padin (padin.adrian@gmail.com)
 Description:
-    This is the starter file for the cipher program
-    This program can be used to encode and decode simple
-    ciphers.
+    This header contains definitions for using the Caesar
+    cipher. A Caesar cipher is a simple cipher that changes
+    each character in the plaintext to a different letter
+    using a fixed offset. For example, if the offset is 1,
+    each letter in the text is shifted to the next letter
+    in the alphabet. So A becomes B, B becomes C and so on.
 
-    Supported ciphers:
-    - Caesar cipher
-    - Vigenere cipher
+    In this implementation, the offset is given by the letter
+    which corresponds to the number of the offset, starting
+    at zero:
+        A = 0, B = 1, C = 2, etc.
+
+    Example:
+    - plaintext:  HELLOWORLD
+    - password:   B
+    - ciphertext: IFMMPXPSME
 
 \************************************************************/
 

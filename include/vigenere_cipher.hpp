@@ -1,14 +1,25 @@
 /************************************************************\
-Filename:   cipher.cpp
+Filename:   vigenere_cipher.hpp
 Author:     Adrian Padin (padin.adrian@gmail.com)
 Description:
-    This is the starter file for the cipher program
-    This program can be used to encode and decode simple
-    ciphers.
+    This header contains definitions for using the Vigenere
+    cipher. A Vigenere cipher is an extended form of the
+    Caesar cipher; instead of every character being shifted
+    by the same offset, each character has a different offset
+    which follows a pattern determined by the cipher key.
 
-    Supported ciphers:
-    - Caesar cipher
-    - Vigenere cipher
+    For example, if the cipher key is HELLO:
+    * The 1st letter is shifted by 7  (for H)
+    * The 2nd letter is shifted by 4  (for E)
+    * The 3rd letter is shifted by 11 (for L)
+    * The 4th letter is shifted by 11 (for L)
+    * The 5th letter is shifted by 14 (for O)
+    * The 6th letter is shifted by 7  (for H)
+    * ...
+
+    And so on for all letters in the plaintext. So, a Vigenere
+    cipher operates somewhat like many independent Caesar
+    ciphers.
 
 \************************************************************/
 

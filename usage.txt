@@ -6,9 +6,9 @@ With no INPUT_FILE, or when INPUT_FILE is -, read standard input.
 With no OUTPUT_FILE, or when OUTPUT_FILE is -, read standard input.
 
   -h    Print this help message and exit
-  -m    Use cipher method METHOD
+  -v    Print extended version information and exit
+  -m    Use encryption method METHOD
         Supported options for METHOD: 'caesar', 'vigenere'
   -p    PASSWORD will be used as the cipher key
-
 
 Report bugs to Adrian Padin: <padin.adrian@gmail.com>
