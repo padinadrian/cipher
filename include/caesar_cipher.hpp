@@ -37,9 +37,9 @@ namespace cipher {
 
     /**
      * Encrypt the given plaintext using a Caesar cipher
-     * This funciton is limited to upper-case alphabet characters (A-Z)
+     * This function is limited to upper-case alphabet characters (A-Z)
      * See https://en.wikipedia.org/wiki/Caesar_cipher for details
-     * @param[in]   password - The encryption offset. Use the same offset to decrypt
+     * @param[in]   password - The encryption key. Use the same key to decrypt
      * @param[in]   plaintext - The text to encrypt
      * @param[out]  ciphertext - The resulting encrypted text
      * @throw   If password or plaintext contain non-alpha characters
@@ -47,6 +47,20 @@ namespace cipher {
     inline void EncryptCaesarAlpha(const char password, const std::string& plaintext, std::string& ciphertext)
     {
         EncryptVigenereAlpha(std::string(1, password), plaintext, ciphertext);
+    }
+
+    /**
+     * Decrypt the given ciphertext using a Caesar cipher
+     * This function is limited to upper-case alphabet characters (A-Z)
+     * See https://en.wikipedia.org/wiki/Caesar_cipher for details
+     * @param[in]   password - The decryption key. Use the same key to encrypt
+     * @param[in]   ciphertext - The text to decrypt
+     * @param[out]  plaintext - The resulting decrypted text
+     * @throw   If password or plaintext contain non-alpha characters
+     */
+    inline void DecryptCaesarAlpha(const char password, const std::string& plaintext, std::string& ciphertext)
+    {
+        DecryptVigenereAlpha(std::string(1, password), plaintext, ciphertext);
     }
 
 }   // end namespace cipher

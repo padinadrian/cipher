@@ -10,5 +10,6 @@ With no OUTPUT_FILE, or when OUTPUT_FILE is -, read standard input.
   -m    Use encryption method METHOD
         Supported options for METHOD: 'caesar', 'vigenere'
   -p    PASSWORD will be used as the cipher key
+  -d    Decrypt, use input as cipher text and output the plaintext
 
 Report bugs to Adrian Padin: <padin.adrian@gmail.com>

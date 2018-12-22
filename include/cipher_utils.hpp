@@ -18,6 +18,7 @@ Description:
 #include <locale>
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 
 namespace cipher {
@@ -44,26 +45,43 @@ namespace cipher {
         return oss.str();
     }
 
+    /** Invert a password (for A-Z alphabet) so it can be used for decryption */
+    inline std::string InvertPassword(const std::string& password)
+    {
+        std::string rpassword(password);
+        for (auto it = rpassword.begin(); it != rpassword.end(); ++it)
+        {
+            // y = (26 - x) % 26
+            const char alphasize = static_cast<char>(26);
+            const char numerical = (*it - 'A');
+            *it = ((alphasize - numerical) % alphasize) + 'A';
+        }
+        return rpassword;
+    }
+
 
     // Whitespace trim functions
     // Taken from https://stackoverflow.com/a/217605/5179394
 
     /**  Trim whitespace from start */
-    static inline std::string &ltrim(std::string &s) {
+    static inline std::string &ltrim(std::string &s)
+    {
         s.erase(s.begin(), std::find_if(s.begin(), s.end(),
                 std::not1(std::ptr_fun<int, int>(std::isspace))));
         return s;
     }
 
     /** Trim whitespace from end */
-    static inline std::string &rtrim(std::string &s) {
+    static inline std::string &rtrim(std::string &s)
+    {
         s.erase(std::find_if(s.rbegin(), s.rend(),
                 std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
         return s;
     }
 
     /** Trim whitespace from both ends */
-    static inline std::string &trim(std::string &s) {
+    static inline std::string &trim(std::string &s)
+    {
         return ltrim(rtrim(s));
     }
 

@@ -26,7 +26,9 @@ Description:
 #include "caesar_cipher.hpp"
 
 using cipher::EncryptCaesarAlpha;
+using cipher::DecryptCaesarAlpha;
 using cipher::EncryptVigenereAlpha;
+using cipher::DecryptVigenereAlpha;
 using cipher::VERSION_FULL;
 
 
@@ -59,51 +61,79 @@ static void ReadFromFile(const std::istream& input_file, std::string& output_str
 static int32_t ExecuteCipher(const std::string& method,
                              std::string& password,
                              std::istream& input_file,
-                             std::ostream& output_file)
+                             std::ostream& output_file,
+                             bool decrypt_flag)
 {
     // End result return code
     int32_t retval = 0;
 
-    // Input
-    std::string plaintext;
-    ReadFromFile(input_file, plaintext);
-    (void)cipher::rtrim(plaintext);
-    (void)cipher::rtrim(password);
-
-    // Do the cipher
-    std::string ciphertext;
-    if (method == "vigenere")
+    // Input checking
+    if (!output_file)
     {
-        try
-        {
-            EncryptVigenereAlpha(password, plaintext, ciphertext);
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << "Error: " << e.what() << std::endl;
-            retval = 1;
-        }
-    }
-    else if (method == "caesar")
-    {
-        try
-        {
-            EncryptCaesarAlpha(password[0], plaintext, ciphertext);
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << "Error: " << e.what() << std::endl;
-            retval = 1;
-        }
-    }
-    else
-    {
-        std::cerr << "Error: method \"" << method << "\" not supported." << std::endl;
+        std::cerr << "Error: output file could not be opened" << std::endl;
         retval = 1;
     }
+    else if (!input_file)
+    {
+        std::cerr << "Error: input file could not be opened" << std::endl;
+        retval = 1;
+    }
+    else {
+        // Input
+        std::string plaintext;
+        ReadFromFile(input_file, plaintext);
+        (void)cipher::rtrim(plaintext);
+        (void)cipher::rtrim(password);
 
-    // Output
-    output_file << ciphertext << std::endl;
+        // Do the cipher
+        std::string ciphertext;
+        if (method == "vigenere")
+        {
+            try
+            {
+                if (decrypt_flag)
+                {
+                    DecryptVigenereAlpha(password, plaintext, ciphertext);
+                }
+                else
+                {
+                    EncryptVigenereAlpha(password, plaintext, ciphertext);
+                }
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << "Error: " << e.what() << std::endl;
+                retval = 1;
+            }
+        }
+        else if (method == "caesar")
+        {
+            try
+            {
+                if (decrypt_flag)
+                {
+                    DecryptCaesarAlpha(password[0], plaintext, ciphertext);
+                }
+                else
+                {
+                    EncryptCaesarAlpha(password[0], plaintext, ciphertext);
+                }
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << "Error: " << e.what() << std::endl;
+                retval = 1;
+            }
+        }
+        else
+        {
+            std::cerr << "Error: method \"" << method << "\" not supported." << std::endl;
+            retval = 1;
+        }
+
+        // Output
+        output_file << ciphertext << std::endl;
+    }
     return retval;
 }
 
@@ -119,7 +149,7 @@ int main(int32_t argc, char* const* argv)
     int32_t opt = 0;
     std::string method;
     std::string password;
-    bool decrypt = false;
+    bool decrypt_flag = false;
     while ((opt = getopt(argc, argv, ":hvdm:p:")) != -1)
     {
         switch(opt)
@@ -158,7 +188,7 @@ int main(int32_t argc, char* const* argv)
             // d means decode/decrypt
             case 'd':
             {
-                decrypt = true;
+                decrypt_flag = true;
                 break;
             }
             // Option missing a value
@@ -231,26 +261,26 @@ int main(int32_t argc, char* const* argv)
             // Use both stdin and stdout
             if (use_stdin && use_stdout)
             {
-                retval = ExecuteCipher(method, password, std::cin, std::cout);
+                retval = ExecuteCipher(method, password, std::cin, std::cout, decrypt_flag);
             }
             // Use stdin for input and file for output
             else if (use_stdin)
             {
                 std::ofstream outfile(argv[optind + 1]);
-                retval = ExecuteCipher(method, password, std::cin, outfile);
+                retval = ExecuteCipher(method, password, std::cin, outfile, decrypt_flag);
             }
             // Use file for input and stdout for output
             else if (use_stdout)
             {
                 std::ifstream infile(argv[optind]);
-                retval = ExecuteCipher(method, password, infile, std::cout);
+                retval = ExecuteCipher(method, password, infile, std::cout, decrypt_flag);
             }
             // Use files for input and output
             else
             {
                 std::ifstream infile(argv[optind]);
                 std::ofstream outfile(argv[optind + 1]);
-                retval = ExecuteCipher(method, password, infile, outfile);
+                retval = ExecuteCipher(method, password, infile, outfile, decrypt_flag);
             }
         }
     }

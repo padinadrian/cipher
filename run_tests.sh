@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 BUILD_DIR="build.local"
-TEST_FILENAME="$BUILD_DIR/bin/cipher_test"
+TEST_FILENAME="$BUILD_DIR/bin/cipher_tests"
 
-make -C $BUILD_DIR
+rm $TEST_FILENAME
+make cipher_tests -C $BUILD_DIR
 $TEST_FILENAME

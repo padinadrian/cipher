@@ -13,11 +13,12 @@ Description:
 #include "cipher_utils.hpp"
 
 using cipher::IsUpperAlpha;
+using cipher::InvertPassword;
 
 
 /* ===== Tests ===== */
 
-//
+// Check that upper-case letters pass
 TEST(CipherUtils, IsUpperAlphaPass)
 {
     EXPECT_TRUE(IsUpperAlpha('A'));
@@ -48,7 +49,7 @@ TEST(CipherUtils, IsUpperAlphaPass)
     EXPECT_TRUE(IsUpperAlpha('Z'));
 }
 
-
+// Check that numbers fail
 TEST(CipherUtils, IsUpperAlphaFailNum)
 {
     EXPECT_FALSE(IsUpperAlpha('0'));
@@ -62,3 +63,47 @@ TEST(CipherUtils, IsUpperAlphaFailNum)
     EXPECT_FALSE(IsUpperAlpha('8'));
     EXPECT_FALSE(IsUpperAlpha('9'));
 }
+
+// Check that 'A' inverts to itself
+TEST(CipherUtils, InvertPasswordIdentity)
+{
+    EXPECT_EQ(InvertPassword("A"), "A");
+}
+
+// Check that single-letter passwords are inverted
+TEST(CipherUtils, InvertPasswordSingleLetter)
+{
+    EXPECT_EQ(InvertPassword("B"), "Z");
+    EXPECT_EQ(InvertPassword("C"), "Y");
+    EXPECT_EQ(InvertPassword("D"), "X");
+    EXPECT_EQ(InvertPassword("E"), "W");
+    EXPECT_EQ(InvertPassword("F"), "V");
+    EXPECT_EQ(InvertPassword("G"), "U");
+    EXPECT_EQ(InvertPassword("H"), "T");
+    EXPECT_EQ(InvertPassword("I"), "S");
+    EXPECT_EQ(InvertPassword("J"), "R");
+    EXPECT_EQ(InvertPassword("K"), "Q");
+    EXPECT_EQ(InvertPassword("L"), "P");
+    EXPECT_EQ(InvertPassword("M"), "O");
+    EXPECT_EQ(InvertPassword("N"), "N");
+    EXPECT_EQ(InvertPassword("O"), "M");
+    EXPECT_EQ(InvertPassword("P"), "L");
+    EXPECT_EQ(InvertPassword("Q"), "K");
+    EXPECT_EQ(InvertPassword("R"), "J");
+    EXPECT_EQ(InvertPassword("S"), "I");
+    EXPECT_EQ(InvertPassword("T"), "H");
+    EXPECT_EQ(InvertPassword("U"), "G");
+    EXPECT_EQ(InvertPassword("V"), "F");
+    EXPECT_EQ(InvertPassword("W"), "E");
+    EXPECT_EQ(InvertPassword("X"), "D");
+    EXPECT_EQ(InvertPassword("Y"), "C");
+    EXPECT_EQ(InvertPassword("Z"), "B");
+}
+
+// Check several longer passwords
+TEST(CipherUtils, InvertPasswordHello)
+{
+    EXPECT_EQ(InvertPassword("HELLO"), "TWPPM");
+    EXPECT_EQ(InvertPassword("WORLD"), "EMJPX");
+}
+

@@ -13,6 +13,7 @@ Description:
 #include "vigenere_cipher.hpp"
 
 using cipher::EncryptVigenereAlpha;
+using cipher::DecryptVigenereAlpha;
 
 
 /* ===== Tests ===== */
@@ -56,7 +57,7 @@ TEST(Vigenere, SimpleB)
 
 TEST(Vigenere, SelfFox)
 {
-    const std::string plaintext(  "THEQUICKBROWNFOXJUMPEDOVERTHELAZYDOG");
+    const std::string plaintext("THEQUICKBROWNFOXJUMPEDOVERTHELAZYDOG");
     const std::string ciphercheck("MOIGOQEUCICSAKCUSOYEIGCQIIMOIWAYWGCM");
     std::string ciphertext;
     EncryptVigenereAlpha(plaintext, plaintext, ciphertext);
@@ -65,9 +66,26 @@ TEST(Vigenere, SelfFox)
 
 TEST(Vigenere, SelfFoxInPlace)
 {
-    std::string plaintext(  "THEQUICKBROWNFOXJUMPEDOVERTHELAZYDOG");
+    std::string plaintext("THEQUICKBROWNFOXJUMPEDOVERTHELAZYDOG");
     const std::string ciphercheck("MOIGOQEUCICSAKCUSOYEIGCQIIMOIWAYWGCM");
     EncryptVigenereAlpha(plaintext, plaintext, plaintext);
     EXPECT_EQ(plaintext, ciphercheck);
 }
 
+TEST(Vigenere, DecryptSelfFoxInPlace)
+{
+    const std::string plaintext("THEQUICKBROWNFOXJUMPEDOVERTHELAZYDOG");
+    std::string ciphertext("MOIGOQEUCICSAKCUSOYEIGCQIIMOIWAYWGCM");
+    DecryptVigenereAlpha(plaintext, ciphertext, ciphertext);
+    EXPECT_EQ(plaintext, ciphertext);
+}
+
+TEST(Vigenere, EncryptDecryptRandom)
+{
+    const std::string password("HELLOWORLD");
+    std::string plaintext("LOISHLDCJLKJDHLIFSUDHFLKSJDHFLISUDHFLISUDFHL");
+    const std::string plaincheck(plaintext);
+    EncryptVigenereAlpha(password, plaintext, plaintext);
+    DecryptVigenereAlpha(password, plaintext, plaintext);
+    EXPECT_EQ(plaintext, plaincheck);
+}

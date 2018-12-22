@@ -40,7 +40,7 @@ namespace cipher {
 
     /**
      * Encrypt the given plaintext using a Vigenere cipher
-     * This funciton is limited to upper-case alphabet characters (A-Z)
+     * This function is limited to upper-case alphabet characters (A-Z)
      * See https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher for details
      * @param[in]   password - The encryption keyword. Use the same keyword to decrypt
      * @param[in]   plaintext - The text to encrypt
@@ -92,6 +92,20 @@ namespace cipher {
                 password_iter = password.cbegin();
             }
         }
+    }
+
+    /**
+     * Decrypt the given ciphertext using a Vigenere cipher
+     * This function is limited to upper-case alphabet characters (A-Z)
+     * See https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher for details
+     * @param[in]   password - The encryption keyword. Use the same keyword to encrypt
+     * @param[in]   ciphertext - The text to decrypt
+     * @param[out]  plaintext - The resulting decrypted text
+     * @throw   If password or ciphertext contain non-alpha characters
+     */
+    inline void DecryptVigenereAlpha(const std::string& password, const std::string& ciphertext, std::string& plaintext)
+    {
+        EncryptVigenereAlpha(InvertPassword(password), ciphertext, plaintext);
     }
 
 }   // end namespace cipher
