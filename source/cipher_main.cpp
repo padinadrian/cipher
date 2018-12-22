@@ -117,10 +117,19 @@ int main(int32_t argc, char* const* argv)
     int32_t opt = 0;
     std::string method;
     std::string password;
-    while ((opt = getopt(argc, argv, ":m:p:")) != -1)
+    bool decrypt = false;
+    bool help_only = false;
+    while ((opt = getopt(argc, argv, ":hdm:p:")) != -1)
     {
         switch(opt)
         {
+            // h is for help
+            case 'h':
+            {
+                retval = 1;
+                help_only = true;
+                break;
+            }
             // m for METHOD
             case 'm':
             {
@@ -131,6 +140,12 @@ int main(int32_t argc, char* const* argv)
             case 'p':
             {
                 password = optarg;
+                break;
+            }
+            // d means decode/decrypt
+            case 'd':
+            {
+                decrypt = true;
                 break;
             }
             // Option missing a value
@@ -149,12 +164,12 @@ int main(int32_t argc, char* const* argv)
     }
 
     // Check for errors in arguments
-    if (method.empty())
+    if (method.empty() && (!help_only))
     {
         std::cerr << "Error: No method given." << std::endl;
         retval = 1;
     }
-    if (password.empty())
+    if (password.empty() && (!help_only))
     {
         std::cerr << "Error: No password given." << std::endl;
         retval = 1;
@@ -162,7 +177,7 @@ int main(int32_t argc, char* const* argv)
 
     if (retval != 0)
     {
-        std::cout << usage_str << std::endl;
+        std::cout << usage_str;
     }
     else
     {
