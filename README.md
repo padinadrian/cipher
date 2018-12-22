@@ -10,7 +10,7 @@ If no filename for output is given, stdout is used.
 
 Run with `-h` for more details.
 
-Example 1:
+### Example 1:
 
 File: hello.txt
 ```
@@ -27,7 +27,7 @@ Output:
 RIJVSUYVJN
 ```
 
-Example 2:
+### Example 2:
 ```
 echo "MYSUPERSECRETSTUFF" | bin/cipher -m caesar -p B | bin/cipher -m caesar -p Z
 ```
@@ -56,7 +56,7 @@ sudo apt-get update
 sudo apt-get install build-essential cmake libgtest-dev
 ```
 
-## Building
+## Building and Installing
 This project uses cmake to generate the build system. Included in the repository
 is a script to automate the cmake generation process (see [build.sh](build.sh))
 
@@ -73,10 +73,15 @@ chmod +x build.sh
 #3. Run make to build all:
 cd build.local
 make
+
+#4. To install at /usr/local/bin/cipher (optional):
+sudo make install
 ```
 
 This will place both the cipher program and the unit tests in the bin folder at
-`bin/cipher` and `bin/cipher_tests` respectively.
+`bin/cipher` and `bin/cipher_tests` respectively. By running the `make install`
+command you can also install cipher to your computer so that it can be used from
+the commandline from anywhere.
 
 ## Running unit tests
 The unit tests for cipher use gtest, which needs to be installed separately (see
@@ -94,6 +99,6 @@ before running:
 ```
 
 # Future work
-- [ ] Installation instructions
+- [x] Installation instructions
 - [ ] Support for direct decryption
 - [ ] Support additional ciphers

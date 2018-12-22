@@ -21,3 +21,6 @@ add_dependencies(${PROJECT_NAME} usage_header)
 
 # Add usage_header output path as an include path
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+# Add install command
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "/usr/local/bin")
