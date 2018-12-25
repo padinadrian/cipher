@@ -29,7 +29,7 @@ RIJVSUYVJN
 
 ### Example 2:
 ```
-echo "MYSUPERSECRETSTUFF" | bin/cipher -m caesar -p B | bin/cipher -m caesar -p Z
+echo "MYSUPERSECRETSTUFF" | cipher -m caesar -p B | cipher -m caesar -p Z
 ```
 
 Output:
@@ -80,19 +80,19 @@ sudo make install
 
 This will place both the cipher program and the unit tests in the bin folder at
 `bin/cipher` and `bin/cipher_tests` respectively. By running the `make install`
-command you can also install cipher to your computer so that it can be used from
-the commandline from anywhere.
+command you can also install cipher to your applcation path so that it can be
+used from the commandline from anywhere.
 
 ## Running unit tests
 The unit tests for cipher use gtest, which needs to be installed separately (see
 Dependencies above).
 
-You can run the tests directly with this command:
+You can run the tests directly from the build folder:
 ```bash
 bin/cipher_tests
 ```
 
-You can also use this convenience script which automatically rebuilds the tests
+Or, you can also use this convenience script which automatically rebuilds the tests
 before running:
 ```bash
 ./run_tests.sh
