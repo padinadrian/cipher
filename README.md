@@ -10,14 +10,14 @@ If no filename for output is given, stdout is used.
 
 Run with `-h` for more details.
 
-### Example 1:
+#### Example 1:
 
-File: hello.txt
+File: `hello.txt`
 ```
 HELLOWORLD
 ```
 
-Run the cipher program:
+Run the `cipher` program with a Vigenère cipher, take input from `hello.txt` and output to stdout:
 ```
 cipher -m vigenere -p KEY hello.txt
 ```
@@ -27,7 +27,9 @@ Output:
 RIJVSUYVJN
 ```
 
-### Example 2:
+#### Example 2:
+
+Use input from stdin to encrypt then decrypt the same text with Caesar:
 ```
 echo "MYSUPERSECRETSTUFF" | cipher -m caesar -p B | cipher -m caesar -p Z
 ```
@@ -38,11 +40,16 @@ MYSUPERSECRETSTUFF
 ```
 
 Supported ciphers are:
-* Caesar cipher
-* Vigenere cipher
+* Caesar cipher (and by extension ROT13)
+* Vigenère cipher
+* Rail fence cipher
 
-## Dependencies
-The following programs/libraries are needed to build from source and run the unit tests:
+
+## Building and Installing
+
+### Dependencies
+The following programs/libraries are needed to build from source and run the
+unit tests:
 * C++ compiler (such as g++)
 * make
 * cmake
@@ -56,9 +63,9 @@ sudo apt-get update
 sudo apt-get install build-essential cmake libgtest-dev
 ```
 
-## Building and Installing
-This project uses cmake to generate the build system. Included in the repository
-is a script to automate the cmake generation process (see [build.sh](build.sh))
+### Building with Make
+This project uses CMake to generate the build system. Included in the repository
+is a script to automate the CMake generation process (see [build.sh](build.sh))
 
 To build the project:
 ```bash
@@ -78,13 +85,13 @@ make
 sudo make install
 ```
 
-This will place both the cipher program and the unit tests in the bin folder at
+This will place both the `cipher` program and the unit tests in the bin folder at
 `bin/cipher` and `bin/cipher_tests` respectively. By running the `make install`
-command you can also install cipher to your applcation path so that it can be
-used from the commandline from anywhere.
+command you can also install `cipher` to your application path so that it can be
+used from the command line from anywhere.
 
 ## Running unit tests
-The unit tests for cipher use gtest, which needs to be installed separately (see
+The unit tests for `cipher` use gtest, which needs to be installed separately (see
 Dependencies above).
 
 You can run the tests directly from the build folder:
@@ -92,13 +99,24 @@ You can run the tests directly from the build folder:
 bin/cipher_tests
 ```
 
-Or, you can also use this convenience script which automatically rebuilds the tests
-before running:
+Or, you can also use this convenience script which automatically rebuilds the
+tests before running:
 ```bash
 ./run_tests.sh
 ```
 
 # Future work
+## Future features:
 - [x] Installation instructions
-- [ ] Support for direct decryption
-- [ ] Support additional ciphers
+- [x] Support for direct decryption
+- [ ] Read key from file
+
+## Future ciphers
+- [x] Rail fence
+- [x] Caesar
+- [x] Vigenere
+- [ ] Scytale
+- [ ] Columnar
+
+## Future bugfixes
+- [ ] Change -p option to -k, and change PASSWORD to CIPHERKEY
