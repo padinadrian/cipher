@@ -1,0 +1,48 @@
+This document contains several examples of how to manually
+encrypt a message with the Rail fence cipher.
+The method uses a "zigzag" pattern to encrypt the message.
+
+(Example taken from https://en.wikipedia.org/wiki/Rail_fence_cipher)
+
+
+Original message: "WE ARE DISCOVERED. FLEE AT ONCE"
+
+Sanitized plaintext: WEAREDISCOVEREDFLEEATONCE
+
+
+Encrypt with 2 rails:
+
+W . A . E . I . C . V . R . D . L . E . T . N . E
+. E . R . D . S . O . E . E . F . E . A . O . C .
+
+Ciphertext: WAEICVRDLETNEERDSOEEFEAOC
+
+
+Encrypt with 3 rails:
+
+W . . . E . . . C . . . R . . . L . . . T . . . E
+. E . R . D . S . O . E . E . F . E . A . O . C .
+. . A . . . I . . . V . . . D . . . E . . . N . .
+
+Ciphertext: WECRLTEERDSOEEFEAOCAIVDEN
+
+
+Encrypt with 4 rails:
+
+W . . . . . I . . . . . R . . . . . E . . . . . E
+. E . . . D . S . . . E . E . . . E . A . . . C .
+. . A . E . . . C . V . . . D . L . . . T . N . .
+. . . R . . . . . O . . . . . F . . . . . O . . .
+
+Ciphertext: WIREEEDSEEEACAECVDLTNROFO
+
+
+Encrypt with 5 rails:
+
+W . . . . . . . C . . . . . . . L . . . . . . . E
+. E . . . . . S . O . . . . . F . E . . . . . C .
+. . A . . . I . . . V . . . D . . . E . . . N . .
+. . . R . D . . . . . E . E . . . . . A . O . . .
+. . . . E . . . . . . . R . . . . . . . T . . . .
+
+Ciphertext: WCLEESOFECAIVDENRDEEAOERT

@@ -5,6 +5,7 @@ add_executable(${PROJECT_NAME}_tests
     cipher_utils_1_test.cpp
     caesar_1_test.cpp
     vigenere_1_test.cpp
+    rail_fence_1_test.cpp
 )
 
 # Add dependent libraries

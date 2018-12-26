@@ -22,13 +22,16 @@ Description:
 #include "unistd.h"
 #include "cipher_usage.hpp"
 #include "cipher_version.hpp"
-#include "vigenere_cipher.hpp"
 #include "caesar_cipher.hpp"
+#include "vigenere_cipher.hpp"
+#include "rail_fence_cipher.hpp"
 
 using cipher::EncryptCaesarAlpha;
 using cipher::DecryptCaesarAlpha;
 using cipher::EncryptVigenereAlpha;
 using cipher::DecryptVigenereAlpha;
+using cipher::EncryptRailFenceAlpha;
+using cipher::DecryptRailFenceAlpha;
 using cipher::VERSION_FULL;
 
 
@@ -78,18 +81,19 @@ static int32_t ExecuteCipher(const std::string& method,
         std::cerr << "Error: input file could not be opened" << std::endl;
         retval = 1;
     }
-    else {
-        // Input
-        std::string plaintext;
-        ReadFromFile(input_file, plaintext);
-        (void)cipher::rtrim(plaintext);
-        (void)cipher::rtrim(password);
-
-        // Do the cipher
-        std::string ciphertext;
-        if (method == "vigenere")
+    else
+    {
+        try
         {
-            try
+            // Input
+            std::string plaintext;
+            ReadFromFile(input_file, plaintext);
+            (void)cipher::rtrim(plaintext);
+            (void)cipher::rtrim(password);
+
+            // Do the cipher
+            std::string ciphertext;
+            if (method == "vigenere")
             {
                 if (decrypt_flag)
                 {
@@ -100,15 +104,7 @@ static int32_t ExecuteCipher(const std::string& method,
                     EncryptVigenereAlpha(password, plaintext, ciphertext);
                 }
             }
-            catch(const std::exception& e)
-            {
-                std::cerr << "Error: " << e.what() << std::endl;
-                retval = 1;
-            }
-        }
-        else if (method == "caesar")
-        {
-            try
+            else if (method == "caesar")
             {
                 if (decrypt_flag)
                 {
@@ -119,20 +115,45 @@ static int32_t ExecuteCipher(const std::string& method,
                     EncryptCaesarAlpha(password[0], plaintext, ciphertext);
                 }
             }
-            catch(const std::exception& e)
+            else if (method == "railfence")
             {
-                std::cerr << "Error: " << e.what() << std::endl;
+                // Determine the correct key
+                // In this case, the number of rails
+                size_t num_rails = 0U;
+                char num_rails_char = password[0];
+                if ((num_rails_char > '0') && (num_rails_char <= '9'))
+                {
+                    num_rails = static_cast<size_t>(num_rails_char - '0');
+                }
+                else
+                {
+                    throw std::runtime_error(std::string("Bad key \"") + password + "\"; key for rail fence cipher is a number 0-9.");
+                }
+
+                if (decrypt_flag)
+                {
+                    DecryptRailFenceAlpha(num_rails, plaintext, ciphertext);
+                }
+                else
+                {
+                    EncryptRailFenceAlpha(num_rails, plaintext, ciphertext);
+                }
+            }
+            else
+            {
+                std::cerr << "Error: method \"" << method << "\" not supported." << std::endl;
                 retval = 1;
             }
+
+            // Output
+            output_file << ciphertext << std::endl;
         }
-        else
+        // Catch any exceptions from running the cipher
+        catch (const std::exception& e)
         {
-            std::cerr << "Error: method \"" << method << "\" not supported." << std::endl;
+            std::cerr << "Error: " << e.what() << std::endl;
             retval = 1;
         }
-
-        // Output
-        output_file << ciphertext << std::endl;
     }
     return retval;
 }

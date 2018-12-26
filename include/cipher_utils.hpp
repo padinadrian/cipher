@@ -59,6 +59,12 @@ namespace cipher {
         return rpassword;
     }
 
+    /** Check if all letters in the plaintext are upper-case letters */
+    inline bool AllUpperAlpha(const std::string& plaintext)
+    {
+        return std::all_of(plaintext.begin(), plaintext.end(), IsUpperAlpha);
+    }
+
 
     // Whitespace trim functions
     // Taken from https://stackoverflow.com/a/217605/5179394

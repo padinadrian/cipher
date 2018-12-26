@@ -5,7 +5,7 @@ project(cipher)
 # Version information
 set(${PROJECT_NAME}_VERSION_MAJOR 0)
 set(${PROJECT_NAME}_VERSION_MINOR 2)
-set(${PROJECT_NAME}_VERSION_BUGFIX 0)
+set(${PROJECT_NAME}_VERSION_BUGFIX 1)
 
 # Universal settings
 include_directories("${CMAKE_SOURCE_DIR}/include")

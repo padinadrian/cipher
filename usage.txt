@@ -8,7 +8,7 @@ With no OUTPUT_FILE, or when OUTPUT_FILE is -, read standard input.
   -h    Print this help message and exit
   -v    Print extended version information and exit
   -m    Use encryption method METHOD
-        Supported options for METHOD: 'caesar', 'vigenere'
+        Supported options for METHOD: 'caesar', 'vigenere', 'railfence'
   -p    PASSWORD will be used as the cipher key
   -d    Decrypt, use input as cipher text and output the plaintext
 
