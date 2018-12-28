@@ -25,6 +25,7 @@ Description:
 #include "caesar_cipher.hpp"
 #include "vigenere_cipher.hpp"
 #include "rail_fence_cipher.hpp"
+#include "scytale_cipher.hpp"
 
 using cipher::EncryptCaesarAlpha;
 using cipher::DecryptCaesarAlpha;
@@ -32,6 +33,8 @@ using cipher::EncryptVigenereAlpha;
 using cipher::DecryptVigenereAlpha;
 using cipher::EncryptRailFenceAlpha;
 using cipher::DecryptRailFenceAlpha;
+using cipher::EncryptScytaleAlpha;
+using cipher::DecryptScytaleAlpha;
 using cipher::VERSION_FULL;
 
 
@@ -138,6 +141,31 @@ static int32_t ExecuteCipher(const std::string& method,
                 {
                     EncryptRailFenceAlpha(num_rails, plaintext, ciphertext);
                 }
+            }
+            else if (method == "scytale")
+            {
+                // Determine the correct key
+                // In this case, the width of the rows
+                size_t row_width = 0U;
+                char row_width_char = cipherkey[0];
+                if ((row_width_char > '0') && (row_width_char <= '9'))
+                {
+                    row_width = static_cast<size_t>(row_width_char - '0');
+                }
+                else
+                {
+                    throw std::runtime_error(std::string("Bad key \"") + cipherkey + "\"; key for scytale cipher is a number 0-9.");
+                }
+
+                if (decrypt_flag)
+                {
+                    DecryptScytaleAlpha(row_width, plaintext, ciphertext);
+                }
+                else
+                {
+                    EncryptScytaleAlpha(row_width, plaintext, ciphertext);
+                }
+
             }
             else
             {

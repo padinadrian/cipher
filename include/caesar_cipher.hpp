@@ -58,9 +58,9 @@ namespace cipher {
      * @param[out]  plaintext - The resulting decrypted text
      * @throw   If cipherkey or plaintext contain non-alpha characters
      */
-    inline void DecryptCaesarAlpha(const char cipherkey, const std::string& plaintext, std::string& ciphertext)
+    inline void DecryptCaesarAlpha(const char cipherkey, const std::string& ciphertext, std::string& plaintext)
     {
-        DecryptVigenereAlpha(std::string(1, cipherkey), plaintext, ciphertext);
+        DecryptVigenereAlpha(std::string(1, cipherkey), ciphertext, plaintext);
     }
 
 }   // end namespace cipher

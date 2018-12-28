@@ -43,6 +43,7 @@ Supported ciphers are:
 * Caesar cipher (and by extension ROT13)
 * Vigenère cipher
 * Rail fence cipher
+* Scytale cipher
 
 
 ## Building and Installing
@@ -115,7 +116,7 @@ tests before running:
 - [x] Rail fence
 - [x] Caesar
 - [x] Vigenere
-- [ ] Scytale
+- [x] Scytale
 - [ ] Columnar
 
 ## Future bugfixes

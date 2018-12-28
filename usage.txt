@@ -1,6 +1,6 @@
-Usage: cipher -m METHOD -p CIPHERKEY [INPUT_FILE] [OUTPUT_FILE]
+Usage: cipher -m METHOD -k CIPHERKEY [INPUT_FILE] [OUTPUT_FILE]
 Encrypt or decrypt text using simple ciphers
-Example: cipher -m vigenere -p HELLOWORLD - ciphertext.txt
+Example: cipher -m vigenere -k HELLOWORLD - ciphertext.txt
 
 With no INPUT_FILE, or when INPUT_FILE is -, read standard input.
 With no OUTPUT_FILE, or when OUTPUT_FILE is -, read standard input.
@@ -8,8 +8,9 @@ With no OUTPUT_FILE, or when OUTPUT_FILE is -, read standard input.
   -h    Print this help message and exit
   -v    Print extended version information and exit
   -m    Use encryption method METHOD
-        Supported options for METHOD: 'caesar', 'vigenere', 'railfence'
-  -p    CIPHERKEY will be used as the cipher key
+            Supported options for METHOD:
+            'caesar', 'vigenere', 'railfence', 'scytale'
+  -k    CIPHERKEY will be used as the cipher key
   -d    Decrypt, use input as cipher text and output the plaintext
 
 Report bugs to Adrian Padin: <padin.adrian@gmail.com>
