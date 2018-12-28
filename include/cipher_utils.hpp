@@ -45,18 +45,18 @@ namespace cipher {
         return oss.str();
     }
 
-    /** Invert a password (for A-Z alphabet) so it can be used for decryption */
-    inline std::string InvertPassword(const std::string& password)
+    /** Invert a cipherkey (for A-Z alphabet) so it can be used for decryption */
+    inline std::string InvertCipherkey(const std::string& cipherkey)
     {
-        std::string rpassword(password);
-        for (auto it = rpassword.begin(); it != rpassword.end(); ++it)
+        std::string reverse_key(cipherkey);
+        for (auto it = reverse_key.begin(); it != reverse_key.end(); ++it)
         {
             // y = (26 - x) % 26
             const char alphasize = static_cast<char>(26);
             const char numerical = (*it - 'A');
             *it = ((alphasize - numerical) % alphasize) + 'A';
         }
-        return rpassword;
+        return reverse_key;
     }
 
     /** Check if all letters in the plaintext are upper-case letters */

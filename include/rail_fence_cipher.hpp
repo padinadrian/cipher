@@ -31,7 +31,7 @@ namespace cipher {
      *                          Use the same key to decrypt.
      * @param[in]   plaintext - The text to encrypt
      * @param[out]  ciphertext - The resulting encrypted text
-     * @throw   If password or plaintext contain non-alpha characters
+     * @throw   If plaintext contain non-alpha characters
      */
     inline void EncryptRailFenceAlpha(const size_t num_rails, const std::string& plaintext, std::string& ciphertext)
     {
@@ -85,7 +85,7 @@ namespace cipher {
      *                          Use the same key to encrypt.
      * @param[in]   ciphertext - The text to decrypt
      * @param[out]  plaintext - The resulting decrypted text
-     * @throw   If password or plaintext contain non-alpha characters
+     * @throw   If plaintext contain non-alpha characters
      */
     inline void DecryptRailFenceAlpha(const size_t num_rails, const std::string& ciphertext, std::string& plaintext)
     {

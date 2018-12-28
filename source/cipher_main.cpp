@@ -62,7 +62,7 @@ static void ReadFromFile(const std::istream& input_file, std::string& output_str
  *
  */
 static int32_t ExecuteCipher(const std::string& method,
-                             std::string& password,
+                             std::string& cipherkey,
                              std::istream& input_file,
                              std::ostream& output_file,
                              bool decrypt_flag)
@@ -89,7 +89,7 @@ static int32_t ExecuteCipher(const std::string& method,
             std::string plaintext;
             ReadFromFile(input_file, plaintext);
             (void)cipher::rtrim(plaintext);
-            (void)cipher::rtrim(password);
+            (void)cipher::rtrim(cipherkey);
 
             // Do the cipher
             std::string ciphertext;
@@ -97,22 +97,22 @@ static int32_t ExecuteCipher(const std::string& method,
             {
                 if (decrypt_flag)
                 {
-                    DecryptVigenereAlpha(password, plaintext, ciphertext);
+                    DecryptVigenereAlpha(cipherkey, plaintext, ciphertext);
                 }
                 else
                 {
-                    EncryptVigenereAlpha(password, plaintext, ciphertext);
+                    EncryptVigenereAlpha(cipherkey, plaintext, ciphertext);
                 }
             }
             else if (method == "caesar")
             {
                 if (decrypt_flag)
                 {
-                    DecryptCaesarAlpha(password[0], plaintext, ciphertext);
+                    DecryptCaesarAlpha(cipherkey[0], plaintext, ciphertext);
                 }
                 else
                 {
-                    EncryptCaesarAlpha(password[0], plaintext, ciphertext);
+                    EncryptCaesarAlpha(cipherkey[0], plaintext, ciphertext);
                 }
             }
             else if (method == "railfence")
@@ -120,14 +120,14 @@ static int32_t ExecuteCipher(const std::string& method,
                 // Determine the correct key
                 // In this case, the number of rails
                 size_t num_rails = 0U;
-                char num_rails_char = password[0];
+                char num_rails_char = cipherkey[0];
                 if ((num_rails_char > '0') && (num_rails_char <= '9'))
                 {
                     num_rails = static_cast<size_t>(num_rails_char - '0');
                 }
                 else
                 {
-                    throw std::runtime_error(std::string("Bad key \"") + password + "\"; key for rail fence cipher is a number 0-9.");
+                    throw std::runtime_error(std::string("Bad key \"") + cipherkey + "\"; key for rail fence cipher is a number 0-9.");
                 }
 
                 if (decrypt_flag)
@@ -169,9 +169,9 @@ int main(int32_t argc, char* const* argv)
     // Process arguments
     int32_t opt = 0;
     std::string method;
-    std::string password;
+    std::string cipherkey;
     bool decrypt_flag = false;
-    while ((opt = getopt(argc, argv, ":hvdm:p:")) != -1)
+    while ((opt = getopt(argc, argv, ":hvdm:k:")) != -1)
     {
         switch(opt)
         {
@@ -200,10 +200,10 @@ int main(int32_t argc, char* const* argv)
                 method = optarg;
                 break;
             }
-            // p for PASSWORD
-            case 'p':
+            // k for CIPHERKEY
+            case 'k':
             {
-                password = optarg;
+                cipherkey = optarg;
                 break;
             }
             // d means decode/decrypt
@@ -237,12 +237,12 @@ int main(int32_t argc, char* const* argv)
             std::cerr << "Error: No method given." << std::endl;
             retval = 1;
         }
-        if (password.empty())
+        if (cipherkey.empty())
         {
-            std::cerr << "Error: No password given." << std::endl;
+            std::cerr << "Error: No cipherkey given." << std::endl;
             retval = 1;
         }
-        if (password.empty() || method.empty())
+        if (cipherkey.empty() || method.empty())
         {
             std::cerr << "Try 'cipher -h' for more information." << std::endl;
         }
@@ -282,26 +282,26 @@ int main(int32_t argc, char* const* argv)
             // Use both stdin and stdout
             if (use_stdin && use_stdout)
             {
-                retval = ExecuteCipher(method, password, std::cin, std::cout, decrypt_flag);
+                retval = ExecuteCipher(method, cipherkey, std::cin, std::cout, decrypt_flag);
             }
             // Use stdin for input and file for output
             else if (use_stdin)
             {
                 std::ofstream outfile(argv[optind + 1]);
-                retval = ExecuteCipher(method, password, std::cin, outfile, decrypt_flag);
+                retval = ExecuteCipher(method, cipherkey, std::cin, outfile, decrypt_flag);
             }
             // Use file for input and stdout for output
             else if (use_stdout)
             {
                 std::ifstream infile(argv[optind]);
-                retval = ExecuteCipher(method, password, infile, std::cout, decrypt_flag);
+                retval = ExecuteCipher(method, cipherkey, infile, std::cout, decrypt_flag);
             }
             // Use files for input and output
             else
             {
                 std::ifstream infile(argv[optind]);
                 std::ofstream outfile(argv[optind + 1]);
-                retval = ExecuteCipher(method, password, infile, outfile, decrypt_flag);
+                retval = ExecuteCipher(method, cipherkey, infile, outfile, decrypt_flag);
             }
         }
     }

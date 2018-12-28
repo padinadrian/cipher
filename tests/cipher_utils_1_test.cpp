@@ -13,7 +13,7 @@ Description:
 #include "cipher_utils.hpp"
 
 using cipher::IsUpperAlpha;
-using cipher::InvertPassword;
+using cipher::InvertCipherkey;
 
 
 /* ===== Tests ===== */
@@ -65,45 +65,45 @@ TEST(CipherUtils, IsUpperAlphaFailNum)
 }
 
 // Check that 'A' inverts to itself
-TEST(CipherUtils, InvertPasswordIdentity)
+TEST(CipherUtils, InvertCipherkeyIdentity)
 {
-    EXPECT_EQ(InvertPassword("A"), "A");
+    EXPECT_EQ(InvertCipherkey("A"), "A");
 }
 
-// Check that single-letter passwords are inverted
-TEST(CipherUtils, InvertPasswordSingleLetter)
+// Check that single-letter cipherkeys are inverted
+TEST(CipherUtils, InvertCipherkeySingleLetter)
 {
-    EXPECT_EQ(InvertPassword("B"), "Z");
-    EXPECT_EQ(InvertPassword("C"), "Y");
-    EXPECT_EQ(InvertPassword("D"), "X");
-    EXPECT_EQ(InvertPassword("E"), "W");
-    EXPECT_EQ(InvertPassword("F"), "V");
-    EXPECT_EQ(InvertPassword("G"), "U");
-    EXPECT_EQ(InvertPassword("H"), "T");
-    EXPECT_EQ(InvertPassword("I"), "S");
-    EXPECT_EQ(InvertPassword("J"), "R");
-    EXPECT_EQ(InvertPassword("K"), "Q");
-    EXPECT_EQ(InvertPassword("L"), "P");
-    EXPECT_EQ(InvertPassword("M"), "O");
-    EXPECT_EQ(InvertPassword("N"), "N");
-    EXPECT_EQ(InvertPassword("O"), "M");
-    EXPECT_EQ(InvertPassword("P"), "L");
-    EXPECT_EQ(InvertPassword("Q"), "K");
-    EXPECT_EQ(InvertPassword("R"), "J");
-    EXPECT_EQ(InvertPassword("S"), "I");
-    EXPECT_EQ(InvertPassword("T"), "H");
-    EXPECT_EQ(InvertPassword("U"), "G");
-    EXPECT_EQ(InvertPassword("V"), "F");
-    EXPECT_EQ(InvertPassword("W"), "E");
-    EXPECT_EQ(InvertPassword("X"), "D");
-    EXPECT_EQ(InvertPassword("Y"), "C");
-    EXPECT_EQ(InvertPassword("Z"), "B");
+    EXPECT_EQ(InvertCipherkey("B"), "Z");
+    EXPECT_EQ(InvertCipherkey("C"), "Y");
+    EXPECT_EQ(InvertCipherkey("D"), "X");
+    EXPECT_EQ(InvertCipherkey("E"), "W");
+    EXPECT_EQ(InvertCipherkey("F"), "V");
+    EXPECT_EQ(InvertCipherkey("G"), "U");
+    EXPECT_EQ(InvertCipherkey("H"), "T");
+    EXPECT_EQ(InvertCipherkey("I"), "S");
+    EXPECT_EQ(InvertCipherkey("J"), "R");
+    EXPECT_EQ(InvertCipherkey("K"), "Q");
+    EXPECT_EQ(InvertCipherkey("L"), "P");
+    EXPECT_EQ(InvertCipherkey("M"), "O");
+    EXPECT_EQ(InvertCipherkey("N"), "N");
+    EXPECT_EQ(InvertCipherkey("O"), "M");
+    EXPECT_EQ(InvertCipherkey("P"), "L");
+    EXPECT_EQ(InvertCipherkey("Q"), "K");
+    EXPECT_EQ(InvertCipherkey("R"), "J");
+    EXPECT_EQ(InvertCipherkey("S"), "I");
+    EXPECT_EQ(InvertCipherkey("T"), "H");
+    EXPECT_EQ(InvertCipherkey("U"), "G");
+    EXPECT_EQ(InvertCipherkey("V"), "F");
+    EXPECT_EQ(InvertCipherkey("W"), "E");
+    EXPECT_EQ(InvertCipherkey("X"), "D");
+    EXPECT_EQ(InvertCipherkey("Y"), "C");
+    EXPECT_EQ(InvertCipherkey("Z"), "B");
 }
 
-// Check several longer passwords
-TEST(CipherUtils, InvertPasswordHello)
+// Check several longer cipherkeys
+TEST(CipherUtils, InvertCipherkeyHello)
 {
-    EXPECT_EQ(InvertPassword("HELLO"), "TWPPM");
-    EXPECT_EQ(InvertPassword("WORLD"), "EMJPX");
+    EXPECT_EQ(InvertCipherkey("HELLO"), "TWPPM");
+    EXPECT_EQ(InvertCipherkey("WORLD"), "EMJPX");
 }
 

@@ -119,4 +119,4 @@ tests before running:
 - [ ] Columnar
 
 ## Future bugfixes
-- [ ] Change -p option to -k, and change PASSWORD to CIPHERKEY
+- [x] Change -p option to -k, and change PASSWORD to CIPHERKEY

@@ -18,7 +18,7 @@ using cipher::DecryptVigenereAlpha;
 
 /* ===== Tests ===== */
 
-// Identity test - Use identity password (AAA...)
+// Identity test - Use identity cipherkey (AAA...)
 // Input should be the same as output
 TEST(Vigenere, Identity1)
 {
@@ -44,7 +44,7 @@ TEST(Vigenere, IdentityFox)
     EXPECT_EQ(plaintext, ciphertext);
 }
 
-// Simple one letter password
+// Simple one letter cipherkey
 // Every letter should be shifted by one
 TEST(Vigenere, SimpleB)
 {
@@ -82,10 +82,10 @@ TEST(Vigenere, DecryptSelfFoxInPlace)
 
 TEST(Vigenere, EncryptDecryptRandom)
 {
-    const std::string password("HELLOWORLD");
+    const std::string cipherkey("HELLOWORLD");
     std::string plaintext("LOISHLDCJLKJDHLIFSUDHFLKSJDHFLISUDHFLISUDFHL");
     const std::string plaincheck(plaintext);
-    EncryptVigenereAlpha(password, plaintext, plaintext);
-    DecryptVigenereAlpha(password, plaintext, plaintext);
+    EncryptVigenereAlpha(cipherkey, plaintext, plaintext);
+    DecryptVigenereAlpha(cipherkey, plaintext, plaintext);
     EXPECT_EQ(plaintext, plaincheck);
 }
