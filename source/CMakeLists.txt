@@ -1,10 +1,6 @@
 # CMake file for primary executable
 
-# Add git version info and generate version source
-# Take from https://stackoverflow.com/a/4318642/5179394
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
-include(GetGitRevisionDescription)
-get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+# Generate version source file
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cipher_version.cpp.in" "${CMAKE_CURRENT_BINARY_DIR}/cipher_version.cpp")
 
 # Create binary executable
