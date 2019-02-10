@@ -25,6 +25,21 @@ namespace cipher {
 
     /* ===== Functions ===== */
 
+    /**
+     * Check if all characters in the given text are in the correct range
+     * Range is [0, max)
+     */
+    inline bool CheckCharacterRange(
+        const std::string& plaintext,
+        const unsigned char max)
+    {
+        return std::all_of(
+            plaintext.begin(),
+            plaintext.end(),
+            [max](const char c) { return c < max; }
+        );
+    }
+
     /** Check if a given character is a valid upper-case alphabet character */
     inline bool IsUpperAlpha(const char alpha)
     {
