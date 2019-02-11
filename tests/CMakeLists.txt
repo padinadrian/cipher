@@ -7,6 +7,7 @@ add_executable(${PROJECT_NAME}_tests
     vigenere_1_test.cpp
     rail_fence_1_test.cpp
     scytale_1_test.cpp
+    columnar_1_test.cpp
 )
 
 # Add dependent libraries
