@@ -19,7 +19,7 @@ HELLOWORLD
 
 Run the `cipher` program with a Vigenère cipher, take input from `hello.txt` and output to stdout:
 ```
-cipher -m vigenere -p KEY hello.txt
+cipher -m vigenere -k KEY hello.txt
 ```
 
 Output:
@@ -31,7 +31,7 @@ RIJVSUYVJN
 
 Use input from stdin to encrypt then decrypt the same text with Caesar:
 ```
-echo "MYSUPERSECRETSTUFF" | cipher -m caesar -p B | cipher -m caesar -p Z
+echo "MYSUPERSECRETSTUFF" | cipher -m caesar -k B | cipher -m caesar -k Z
 ```
 
 Output:
@@ -52,6 +52,7 @@ Supported ciphers are:
 The following programs/libraries are needed to build from source and run the
 unit tests:
 * C++ compiler (such as g++)
+* python
 * make
 * cmake
 * googletest (aka gtest)
@@ -61,7 +62,7 @@ You can install the dependencies with the following command:
 On Ubuntu:
 ```bash
 sudo apt-get update
-sudo apt-get install build-essential cmake libgtest-dev
+sudo apt-get install build-essential cmake libgtest-dev python
 ```
 
 ### Building with Make
@@ -79,7 +80,7 @@ chmod +x build.sh
 ./build.sh
 
 #3. Run make to build all:
-cd build.local
+cd build
 make
 
 #4. To install at /usr/local/bin/cipher (optional):
